@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PocketSmart AI</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 24px 16px;
+      background: #f5f6ef;
+      color: #25291f;
+      font-family: Arial, sans-serif;
+    }
+
+    main {
+      width: 100%;
+      max-width: 700px;
+      margin: 25px auto;
+    }
+
+    h1 { margin-bottom: 8px; }
+    h1 span { color: #698348; }
+
+    .intro { color: #666; line-height: 1.5; }
+
+    form, .card {
+      background: white;
+      border: 1px solid #e3e5dc;
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 18px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 16px 0 7px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cfd3c6;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    textarea { min-height: 75px; }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 20px;
+      color: white;
+      background: #698348;
+      border: 0;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .card h3 { margin-bottom: 8px; }
+    .muted { color: #666; line-height: 1.5; }
+    .price { font-weight: bold; }
+    .search { color: #58743b; font-weight: bold; }
+    .notice { margin-top: 18px; color: #777; font-size: 13px; }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>Pocket<span>Smart</span> AI</h1>
+    <p class="intro">
+      Plan home decor, events, and jewelry shopping within your budget.
+    </p>
+
+    <form id="planner">
+      <label for="category">What are you planning?</label>
+      <select id="category">
+        <option>Home decor</option>
+        <option>Event planning</option>
+        <option>Jewelry shopping</option>
+      </select>
+
+      <label for="budget">Your budget (₹)</label>
+      <input id="budget" type="number" min="1" placeholder="Example: 25000" required>
+
+      <label for="needs">What do you need?</label>
+      <textarea id="needs" placeholder="Example: living room makeover, birthday party"></textarea>
+
+      <button type="submit">Show my ideas</button>
+    </form>
+
+    <section id="results"></section>
+
+    <p class="notice">
+      Demo suggestions only. These are not live products, prices, or availability.
+    </p>
+  </main>
+
+  <script>
+    const planner = document.getElementById("planner");
+    const results = document.getElementById("results");
+
+    planner.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const category = document.getElementById("category").value;
+      const budget = Number(document.getElementById("budget").value);
+      const needs = document.getElementById("needs").value.trim();
+
+      if (!budget || budget <= 0) {
+        results.innerHTML = "<p>Please enter a valid budget.</p>";
+        return;
+      }
+
+      let ideas;
+
+      if (category === "Home decor") {
+        ideas = [
+          ["Lighting and decor refresh", 0.35, "IKEA"],
+          ["Storage and shelves", 0.30, "Amazon"],
+          ["Cushions and small accents", 0.20, "Flipkart"]
+        ];
+      } else if (category === "Event planning") {
+        ideas = [
+          ["Food and refreshments", 0.50, "Swiggy"],
+          ["Simple reusable decorations", 0.20, "Amazon"],
+          ["Venue or stay options", 0.25, "OYO"]
+        ];
+      } else {
+        ideas = [
+          ["Main occasion jewelry piece", 0.45, "Amazon"],
+          ["Matching accessories", 0.25, "Flipkart"],
+          ["Classic reusable jewelry", 0.20, "Amazon"]
+        ];
+      }
+
+      results.innerHTML = "<h2>Your planning ideas</h2>";
+
+      ideas.forEach(function (idea) {
+        const estimate = Math.round(budget * idea[1]);
+        const searchText = encodeURIComponent(idea[0] + " " + (needs || category));
+        const platform = encodeURIComponent(idea[2]);
+        const searchUrl = "https://www.google.com/search?q=" + searchText + "+" + platform;
+
+        results.innerHTML += `
+          <article class="card">
+            <h3>${idea[0]}</h3>
+            <p class="muted">Suggested platform: ${idea[2]}</p>
+            <p class="price">Planning estimate: ₹${estimate.toLocaleString("en-IN")}</p>
+            <a class="search" href="${searchUrl}" target="_blank" rel="noopener">
+              Search ${idea[2]}
+            </a>
+          </article>
+        `;
+      });
+    });
+  </script>
+</body>
+</html>
