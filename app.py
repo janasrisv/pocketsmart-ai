@@ -3,6 +3,12 @@ import requests
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
+@app.after_request
+def allow_github_pages(response):
+    response.headers["Access-Control-Allow-Origin"] = "https://janasrisv.github.io"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    return response
 
 PLANNERS = {
     "home": "home decor and interior planning",
