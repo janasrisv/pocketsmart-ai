@@ -163,11 +163,9 @@
           results.appendChild(card);
         });
       }
-    } catch (error) {
-      results.textContent =
-        "Could not get suggestions. Please wait a little and try again.";
-    }
-  });
+    } } catch (error) {
+  results.textContent = "Error: " + error.message;
+}
   </script>
 </body>
 </html>
