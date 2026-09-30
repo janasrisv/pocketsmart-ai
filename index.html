@@ -103,69 +103,76 @@
   </main>
 
   <script>
-  const planner = document.getElementById("planner");
-  const results = document.getElementById("results");
+const planner = document.getElementById("planner");
+const results = document.getElementById("results");
 
-  planner.addEventListener("submit", async function (event) {
-    event.preventDefault();
+// Render dashboard-la kaattura service URL idathula unga exact URL-a podunga.
+const API_BASE_URL = "https://pocketsmart-ai-hemd.onrender.com";
 
-    const category = document.getElementById("category").value;
-    const budget = Number(document.getElementById("budget").value);
-    const needs = document.getElementById("needs").value.trim();
+planner.addEventListener("submit", async function (event) {
+  event.preventDefault();
 
-    const endpointName = {
-      "Home decor": "home",
-      "Event planning": "party",
-      "Jewelry shopping": "jewelry"
-    }[category];
+  const category = document.getElementById("category").value;
+  const budget = Number(document.getElementById("budget").value);
+  const needs = document.getElementById("needs").value.trim();
 
-    results.textContent = "Loading suggestions...";
+  const endpointName = {
+    "Home decor": "home",
+    "Event planning": "party",
+    "Jewelry shopping": "jewelry"
+  }[category];
 
-    try {
-      const response = await fetch(
-        "https://pocketsmart-ai-hemd.onrender.com/generate-" + endpointName,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ budget: budget, needs: needs })
-        }
-      );
+  results.textContent = "Loading suggestions...";
 
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Request failed");
-
-      results.replaceChildren();
-
-      const heading = document.createElement("h2");
-      heading.textContent = "Your planning ideas";
-      results.appendChild(heading);
-
-      if (data.recommendation) {
-        const paragraph = document.createElement("p");
-        paragraph.textContent = data.recommendation;
-        results.appendChild(paragraph);
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/generate-${endpointName}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ budget: budget, needs: needs })
       }
+    );
 
-      if (data.suggestions) {
-        data.suggestions.forEach(function (idea) {
-          const card = document.createElement("article");
-          card.className = "card";
+    const data = await response.json();
 
-          const title = document.createElement("h3");
-          title.textContent = idea.name;
+    if (!response.ok) {
+      throw new Error(data.error || "Request failed");
+    }
 
-          const estimate = document.createElement("p");
-          estimate.textContent =
-            "Estimated budget: ₹" +
-            Number(idea.estimated_budget).toLocaleString("en-IN");
+    results.replaceChildren();
 
-          card.append(title, estimate);
-          results.appendChild(card);
-        });
-      }
-    } } catch (error) {
-  results.textContent = "Error: " + error.message;
-}
+    const heading = document.createElement("h2");
+    heading.textContent = "Your planning ideas";
+    results.appendChild(heading);
+
+    if (data.recommendation) {
+      const paragraph = document.createElement("p");
+      paragraph.textContent = data.recommendation;
+      results.appendChild(paragraph);
+    }
+
+    if (data.suggestions) {
+      data.suggestions.forEach(function (idea) {
+        const card = document.createElement("article");
+        card.className = "card";
+
+        const title = document.createElement("h3");
+        title.textContent = idea.name;
+
+        const estimate = document.createElement("p");
+        estimate.textContent =
+          "Estimated budget: ₹" +
+          Number(idea.estimated_budget).toLocaleString("en-IN");
+
+        card.append(title, estimate);
+        results.appendChild(card);
+      });
+    }
+  } catch (error) {
+    results.textContent = "Error: " + error.message;
+  }
+});
   </script>
 </body>
 </html>
