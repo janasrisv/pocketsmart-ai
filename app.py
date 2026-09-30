@@ -1,14 +1,19 @@
-import os
+ import os
 import requests
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
+
+
 @app.after_request
 def allow_github_pages(response):
-    response.headers["Access-Control-Allow-Origin"] = "https://janasrisv.github.io"
+    response.headers["Access-Control-Allow-Origin"] = (
+        "https://janasrisv.github.io"
+    )
     response.headers["Access-Control-Allow-Headers"] = "Content-Type"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
     return response
+
 
 PLANNERS = {
     "home": "home decor and interior planning",
@@ -53,8 +58,8 @@ def make_recommendation(planner):
             "suggestions": [
                 {"name": "Essentials", "estimated_budget": round(budget * 0.5)},
                 {"name": "Useful extras", "estimated_budget": round(budget * 0.3)},
-                {"name": "Keep aside", "estimated_budget": round(budget * 0.2)}
-            ]
+                {"name": "Keep aside", "estimated_budget": round(budget * 0.2)},
+            ],
         })
 
     prompt = f"""
@@ -76,9 +81,10 @@ These are estimates, not live prices or confirmed products.
             url,
             headers={"x-goog-api-key": api_key},
             json={"contents": [{"parts": [{"text": prompt}]}]},
-            timeout=30
+            timeout=30,
         )
         response.raise_for_status()
+
         result = response.json()
         answer = result["candidates"][0]["content"]["parts"][0]["text"]
 
@@ -86,7 +92,7 @@ These are estimates, not live prices or confirmed products.
             "mode": "gemini",
             "planner": planner,
             "budget": budget,
-            "recommendation": answer
+            "recommendation": answer,
         })
 
     except (requests.RequestException, KeyError, IndexError, ValueError):
