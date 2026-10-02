@@ -47,7 +47,7 @@ def make_recommendation(planner):
     occasion = str(data.get("occasion", "")).strip()[:200]
 
     api_key = os.getenv("GEMINI_API_KEY")
-    model = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
+    model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
     if not api_key:
         return jsonify({
@@ -66,6 +66,7 @@ def make_recommendation(planner):
 Create 3 practical suggestions for {PLANNERS[planner]}.
 User budget: {budget}
 Needs: {needs}
+Currency: Indian Rupees (₹). Use ₹ for all amounts.
 Occasion: {occasion}
 Return a short, clear answer. Split the budget across the suggestions.
 These are estimates, not live prices or confirmed products.
