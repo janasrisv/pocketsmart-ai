@@ -63,12 +63,16 @@ def make_recommendation(planner):
         })
 
     prompt = f"""
+You are a budget shopping assistant for India.
 Create 3 practical suggestions for {PLANNERS[planner]}.
 User budget: {budget}
 Needs: {needs}
-Currency: Indian Rupees (₹). Use ₹ for all amounts.
 Occasion: {occasion}
-Return a short, clear answer. Split the budget across the suggestions.
+Currency: Indian Rupees (₹). Use ₹ for all amounts.
+For each suggestion give the item name, a platform to buy or book from, an estimated price in ₹, and one line on why it fits.
+Use Amazon, Flipkart or IKEA for home items. Use Swiggy or Zomato for food and OYO for venues. Use Amazon, Flipkart or Myntra for jewelry.
+Keep the total within the budget.
+Use plain text only. Do not use markdown symbols like ** or #.
 These are estimates, not live prices or confirmed products.
 """
 
