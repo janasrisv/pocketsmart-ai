@@ -81,7 +81,7 @@ These are estimates, not live prices or confirmed products.
         f"{model}:generateContent"
     )
 
-    try:
+        try:
         response = requests.post(
             url,
             headers={"x-goog-api-key": api_key},
@@ -100,7 +100,7 @@ These are estimates, not live prices or confirmed products.
             "recommendation": answer,
         })
 
-        except requests.RequestException as error:
+    except requests.RequestException as error:
         details = ""
         if error.response is not None:
             details = error.response.text[:300]
