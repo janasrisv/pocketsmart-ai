@@ -100,9 +100,16 @@ These are estimates, not live prices or confirmed products.
             "recommendation": answer,
         })
 
-    except (requests.RequestException, KeyError, IndexError, ValueError):
+        except requests.RequestException as error:
+        details = ""
+        if error.response is not None:
+            details = error.response.text[:300]
         return jsonify({
-            "error": "Gemini request failed. Check the API key and model settings."
+            "error": "Gemini request failed: " + details
+        }), 502
+    except (KeyError, IndexError, ValueError):
+        return jsonify({
+            "error": "Unexpected response from Gemini."
         }), 502
 
 
