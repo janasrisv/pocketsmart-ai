@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Jewelry Budget Planner{% endblock %}
+{% block content %}
+<div class="hero"><h1>Jewelry Budget Planner</h1><p>Get AI jewelry recommendations within your budget</p></div>
+<div class="container">
+  <form class="form-card" method="post" action="/jewelry-planner" enctype="multipart/form-data">
+    <label>Total Budget (₹)</label>
+    <input type="number" name="budget" value="{{ budget }}" required>
+    <label>Occasion</label>
+    <input name="occasion" placeholder="Birthday, Wedding..." required>
+    <label>Style Preferences</label>
+    <textarea name="style" rows="3" placeholder="Materials, colors, etc."></textarea>
+    <label>Upload Outfit Image (optional)</label>
+    <input type="file" name="outfit" accept="image/*">
+    <button class="btn" type="submit">Get Recommendations</button>
+  </form>
+  {% include "_results.html" %}
+</div>
+{% endblock %}

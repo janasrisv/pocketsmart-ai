@@ -1,0 +1,16 @@
+{% if result %}
+<section class="results">
+  <h2>{{ result.title }}</h2>
+  <p class="summary">Total Budget: <b>{{ result.budget }}</b> | Remaining: <b>{{ result.remaining }}</b></p>
+  {% if result.image %}<img class="preview" src="/static/uploads/{{ result.image }}" alt="Outfit">{% endif %}
+  <div class="card-grid">
+    {% for p in result.products %}
+    <div class="card">
+      <h3>{{ p.name }}</h3>
+      <p>{{ p.desc }}</p>
+      <span class="price">{{ p.price }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

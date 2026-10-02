@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Home Interior Budget Planner{% endblock %}
+{% block content %}
+<div class="hero"><h1>Home Interior Budget Planner</h1><p>Create a customized budget plan for your dream home</p></div>
+<div class="container">
+  <form class="form-card" method="post" action="/home-planner">
+    <label>Total Budget (₹)</label>
+    <input type="number" name="budget" value="{{ budget }}" required>
+    <div class="row">
+      <div><label>Number of Lights</label><input type="number" name="lights" value="0" min="0"></div>
+      <div><label>Number of Ceiling Fans</label><input type="number" name="fans" value="0" min="0"></div>
+      <div><label>Furniture Pieces</label><input type="number" name="furniture" value="0" min="0"></div>
+      <div><label>Dining Tables</label><input type="number" name="tables" value="0" min="0"></div>
+    </div>
+    <label>Rooms to Include</label>
+    <div class="checks">
+      <label><input type="checkbox" name="rooms" value="Living Room"> Living Room</label>
+      <label><input type="checkbox" name="rooms" value="Kitchen"> Kitchen</label>
+      <label><input type="checkbox" name="rooms" value="Bedroom"> Bedroom</label>
+    </div>
+    <label>Special Requirements</label>
+    <textarea name="notes" rows="3" placeholder="Any specific requirements..."></textarea>
+    <button class="btn" type="submit">Generate Recommendations</button>
+  </form>
+  {% include "_results.html" %}
+</div>
+{% endblock %}

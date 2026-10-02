@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Party Budget Planner{% endblock %}
+{% block content %}
+<div class="hero"><h1>Party Budget Planner</h1><p>Plan your perfect event with AI-powered recommendations</p></div>
+<div class="container">
+  <form class="form-card" method="post" action="/party-planner">
+    <div class="row">
+      <div><label>Total Budget (₹)</label><input type="number" name="budget" value="{{ budget }}" required></div>
+      <div><label>Number of Guests</label><input type="number" name="guests" value="10" min="1" required></div>
+      <div><label>Party Type</label><input name="party_type" placeholder="Birthday, Wedding..." required></div>
+      <div><label>Venue Type</label><input name="venue" placeholder="Home, Hall..." required></div>
+    </div>
+    <label>Party Needs</label>
+    <div class="checks">
+      <label><input type="checkbox" name="needs" value="Catering"> Catering</label>
+      <label><input type="checkbox" name="needs" value="Decoration"> Decoration</label>
+      <label><input type="checkbox" name="needs" value="Entertainment"> Entertainment</label>
+    </div>
+    <label>Additional Requirements</label>
+    <textarea name="notes" rows="3" placeholder="Themes, dietary restrictions, etc."></textarea>
+    <button class="btn" type="submit">Generate Budget Plan</button>
+  </form>
+  {% include "_results.html" %}
+</div>
+{% endblock %}

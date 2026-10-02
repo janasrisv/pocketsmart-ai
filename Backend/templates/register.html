@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="auth-card">
+  <h2>Create Your Account</h2>
+  <form method="post" action="/register">
+    <label>Username</label>
+    <input name="username" placeholder="Choose a username" required>
+    <label>Email</label>
+    <input type="email" name="email" placeholder="Enter your email" required>
+    <label>Password</label>
+    <input type="password" name="password" placeholder="Create a strong password" required>
+    <label>Confirm Password</label>
+    <input type="password" name="confirm" placeholder="Confirm your password" required>
+    <button class="btn" type="submit">Create Account</button>
+  </form>
+  <p>Already have an account? <a href="/login">Sign In</a></p>
+</div>
+{% endblock %}

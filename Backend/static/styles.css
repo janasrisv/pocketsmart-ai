@@ -1,0 +1,35 @@
+:root { --navy:#142a4d; --blue:#3b6aa5; --orange:#f59a23; --bg:#eef2f8; }
+* { box-sizing: border-box; }
+body { margin:0; font-family:'Segoe UI',Arial,sans-serif; background:var(--bg); color:#1c2b45; }
+
+.navbar { display:flex; justify-content:space-between; align-items:center; background:var(--navy); padding:14px 32px; }
+.brand { color:#fff; font-weight:700; font-size:20px; text-decoration:none; }
+.nav-links a { color:#dbe6f7; margin-left:20px; text-decoration:none; font-size:14px; }
+.nav-links a:hover { color:var(--orange); }
+
+.hero { background:linear-gradient(135deg,var(--blue),var(--navy)); color:#fff; text-align:center; padding:50px 20px; }
+.hero h1 { margin:0 0 10px; font-size:34px; }
+
+.container { max-width:720px; margin:30px auto; padding:0 16px; }
+.form-card, .card, .auth-card { background:#fff; border-radius:14px; box-shadow:0 4px 16px rgba(20,42,77,.1); padding:24px; }
+.auth-card { max-width:420px; margin:40px auto; }
+
+label { display:block; font-weight:600; margin:14px 0 6px; font-size:14px; }
+input, select, textarea { width:100%; padding:10px 12px; border:1px solid #cfd8e6; border-radius:8px; font-size:15px; }
+.row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.checks label { display:inline-block; margin-right:16px; font-weight:400; }
+.checks input { width:auto; }
+
+.btn { display:inline-block; background:linear-gradient(90deg,var(--blue),var(--navy)); color:#fff; border:0; padding:12px 28px; border-radius:30px; font-size:15px; cursor:pointer; text-decoration:none; margin-top:18px; }
+.btn:hover { opacity:.9; }
+
+.cat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:900px; margin:30px auto; padding:0 16px; }
+.card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+.card h3 { margin:0 0 8px; color:var(--navy); }
+.price { display:inline-block; background:var(--blue); color:#fff; padding:3px 10px; border-radius:6px; font-size:13px; }
+.results { margin-top:30px; }
+.summary { background:#fff; padding:12px 16px; border-radius:10px; }
+.preview { max-width:200px; border-radius:10px; margin-top:10px; }
+
+.footer { background:var(--navy); color:#dbe6f7; text-align:center; padding:14px; margin-top:40px; font-size:13px; }
+@media (max-width:700px) { .row, .cat-grid { grid-template-columns:1fr; } }

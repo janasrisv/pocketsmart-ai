@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}PocketSmart{% endblock %}</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a class="brand" href="/">PocketSmart</a>
+    <div class="nav-links">
+      <a href="/dashboard">Dashboard</a>
+      <a href="/home-planner">Home Planner</a>
+      <a href="/party-planner">Party Planner</a>
+      <a href="/jewelry-planner">Jewelry Planner</a>
+      <a href="/history">History</a>
+      <a href="/login">Login</a>
+    </div>
+  </nav>
+  {% block content %}{% endblock %}
+  <footer class="footer">© 2026 PocketSmart. All rights reserved.</footer>
+</body>
+</html>

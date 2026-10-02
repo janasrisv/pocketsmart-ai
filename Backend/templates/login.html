@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}PocketSmart - AI Budget Planning{% endblock %}
+{% block content %}
+<div class="hero">
+  <h1>PocketSmart</h1>
+  <p>AI-Powered Budget Planning for Everyday Needs</p>
+</div>
+<div class="container">
+  <form class="form-card" method="get" action="/go">
+    <label>Your Budget (₹)</label>
+    <input type="number" name="budget" placeholder="e.g. 5000" required>
+    <label>Choose a Category</label>
+    <div class="checks">
+      <label><input type="radio" name="category" value="home" checked> 🏠 Home</label>
+      <label><input type="radio" name="category" value="party"> 🎉 Party</label>
+      <label><input type="radio" name="category" value="jewelry"> 💎 Jewelry</label>
+    </div>
+    <button class="btn" type="submit">Get Started</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="hero"><h1>Welcome!</h1><p>Choose a budget planner to get started</p></div>
+<div class="cat-grid">
+  <div class="card"><h3>🏠 Home Budget Planner</h3><p>Plan your interior budget with AI recommendations.</p><a class="btn" href="/home-planner">Get Started</a></div>
+  <div class="card"><h3>🎉 Party Budget Planner</h3><p>Plan venue, catering and decor within budget.</p><a class="btn" href="/party-planner">Get Started</a></div>
+  <div class="card"><h3>💎 Jewelry Budget Planner</h3><p>Jewelry matched to your outfit and occasion.</p><a class="btn" href="/jewelry-planner">Get Started</a></div>
+</div>
+{% endblock %}
