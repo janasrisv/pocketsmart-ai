@@ -17,7 +17,7 @@ even images) and suggests the best options within your budget.
 - Fallback recommendations when AI results are insufficient
 
 ## Tech Stack
-- **Backend:** Python (Flask / FastAPI)
+- **Backend:** Python (Flask)
 - **AI:** Google Gemini 1.5 Flash Pro API
 - **Frontend:** HTML, CSS, JavaScript (Jinja2 templates)
 
