@@ -1,5 +1,4 @@
 import os
-import requests
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
@@ -19,6 +18,28 @@ PLANNERS = {
     "home": "home decor and interior planning",
     "party": "party and event planning",
     "jewelry": "jewelry shopping for a special occasion",
+}
+
+# (item name, platform, percent of budget, why it fits)
+SPLITS = {
+    "home": [
+        ("Sofa covers and cushions", "Amazon", 35, "Gives the living room a fresh look at low cost."),
+        ("Lamps and lighting", "IKEA", 25, "Warm light changes the whole mood of the room."),
+        ("Curtains and rug", "Flipkart", 25, "Adds colour and makes the room feel complete."),
+        ("Wall art and plants", "Amazon", 15, "Small items that finish the makeover."),
+    ],
+    "party": [
+        ("Food and cake", "Swiggy or Zomato", 40, "Food is the main part of any party."),
+        ("Decoration and balloons", "Amazon", 25, "Makes the place look festive."),
+        ("Venue or hall booking", "OYO", 20, "Gives enough space for all guests."),
+        ("Return gifts and games", "Flipkart", 15, "Keeps the guests happy and busy."),
+    ],
+    "jewelry": [
+        ("Main piece (necklace or earrings)", "Myntra", 50, "The main piece decides the full look."),
+        ("Matching small pieces", "Flipkart", 25, "Bangles or studs to match the main piece."),
+        ("Gift box and packaging", "Amazon", 10, "Makes it ready to gift."),
+        ("Keep aside", "Savings", 15, "Extra money for offers or small changes."),
+    ],
 }
 
 
@@ -46,71 +67,31 @@ def make_recommendation(planner):
     needs = str(data.get("needs", "")).strip()[:500]
     occasion = str(data.get("occasion", "")).strip()[:200]
 
-    api_key = os.getenv("GEMINI_API_KEY")
-    model = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
+    suggestions = []
+    lines = [f"Plan for {PLANNERS[planner]} with budget Rs {round(budget)}."]
+    if needs:
+        lines.append(f"Your needs: {needs}")
+    if occasion:
+        lines.append(f"Occasion: {occasion}")
+    lines.append("")
 
-    if not api_key:
-        return jsonify({
-            "mode": "demo",
-            "message": "Add a Gemini API key to enable AI recommendations.",
-            "planner": planner,
-            "budget": budget,
-            "suggestions": [
-                {"name": "Essentials", "estimated_budget": round(budget * 0.5)},
-                {"name": "Useful extras", "estimated_budget": round(budget * 0.3)},
-                {"name": "Keep aside", "estimated_budget": round(budget * 0.2)},
-            ],
-        })
+    for number, (name, platform, percent, why) in enumerate(SPLITS[planner], 1):
+        amount = round(budget * percent / 100)
+        suggestions.append({"name": name, "estimated_budget": amount})
+        lines.append(f"{number}. {name} - about Rs {amount}")
+        lines.append(f"   Buy from: {platform}")
+        lines.append(f"   Why: {why}")
 
-    prompt = f"""
-You are a budget shopping assistant for India.
-Create 3 practical suggestions for {PLANNERS[planner]}.
-User budget: {budget}
-Needs: {needs}
-Occasion: {occasion}
-Currency: Indian Rupees (₹). Use ₹ for all amounts.
-For each suggestion give the item name, a platform to buy or book from, an estimated price in ₹, and one line on why it fits.
-Use Amazon, Flipkart or IKEA for home items. Use Swiggy or Zomato for food and OYO for venues. Use Amazon, Flipkart or Myntra for jewelry.
-Keep the total within the budget.
-Use plain text only. Do not use markdown symbols like ** or #.
-These are estimates, not live prices or confirmed products.
-"""
+    lines.append("")
+    lines.append("These are estimates, not live prices or confirmed products.")
 
-        url = (
-        "https://generativelanguage.googleapis.com/v1beta/models/"
-        f"{model}:generateContent"
-    )
-
-        try:
-        response = requests.post(
-            url,
-            headers={"x-goog-api-key": api_key},
-            json={"contents": [{"parts": [{"text": prompt}]}]},
-            timeout=30,
-        )
-        response.raise_for_status()
-
-        result = response.json()
-        answer = result["candidates"][0]["content"]["parts"][0]["text"]
-
-        return jsonify({
-            "mode": "gemini",
-            "planner": planner,
-            "budget": budget,
-            "recommendation": answer,
-        })
-
-    except requests.RequestException as error:
-        details = ""
-        if error.response is not None:
-            details = error.response.text[:300]
-        return jsonify({
-            "error": "Gemini request failed: " + details
-        }), 502
-    except (KeyError, IndexError, ValueError):
-        return jsonify({
-            "error": "Unexpected response from Gemini."
-        }), 502
+    return jsonify({
+        "mode": "demo",
+        "planner": planner,
+        "budget": budget,
+        "suggestions": suggestions,
+        "recommendation": "\n".join(lines),
+    })
 
 
 @app.post("/generate-home")
