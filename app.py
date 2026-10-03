@@ -76,7 +76,7 @@ Use plain text only. Do not use markdown symbols like ** or #.
 These are estimates, not live prices or confirmed products.
 """
 
-    url = (
+        url = (
         "https://generativelanguage.googleapis.com/v1beta/models/"
         f"{model}:generateContent"
     )
